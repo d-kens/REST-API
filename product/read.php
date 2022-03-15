@@ -15,6 +15,7 @@ $db = $database->getConnection();
 // Initialize object
 $product = new Product($db);
 
+
 // Query products
 $stmt = $product->read();
 $num = $stmt->rowCount();
