@@ -66,4 +66,39 @@ class Product {
         return false;
 
     }
+
+    // used when fiiling up the update product from
+    public function readOne() {
+        // query to read a single product
+        $query = "SELECT
+                c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
+            FROM
+                " . $this->table_name . " p
+                LEFT JOIN
+                    categories c
+                        ON p.category_id = c.id
+            WHERE
+                p.id = ?
+            LIMIT
+                0,1";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // bind id of the product to be updated
+        $stmt->bindParam(1, $this->id);
+
+        // execute query
+        $stmt->execute();
+
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // set values of the object properties
+        $this->name = $row['name'];
+        $this->price = $row['price'];
+        $this->description = $row['description'];
+        $this->category_id = $row['category_id'];
+        $this->category_name = $row['category_name'];
+    }
 }
