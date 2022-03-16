@@ -139,4 +139,26 @@ class Product {
         return false;
           
     }
+
+    // delete the product
+    function delete(){
+        // delete query
+        $query = "DELETE FROM " . $this->table_name. " WHERE id = ?";
+
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize inputs
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        // bind id of the record to delete
+        $stmt->bindParam(1, $this->id);
+
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+    }
 }
